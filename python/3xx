@@ -1,16 +1,20 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import sys
-import urllib2
+import requests
+
+url = sys.argv[1]
 
 response = None
 try:
-	response = urllib2.urlopen( sys.argv[1] )
-except urllib2.URLError as e:
-	print( e.reason )
-	if e.reason.index( 'unknown url type: https' ):
-		print( "HTTPS error" )
-		exit( 255 )
+	response = requests.get( url, allow_redirects=False )
+except requests.exceptions.MissingSchema:
+	print( 'Invalid url: %s' %(url) )
 	exit( 2 )
 
-print response
+headers = response.headers
+if 'Location' in headers:
+	print( headers['Location'] )
+	exit( 0 )
+else:
+	exit( 1 )
