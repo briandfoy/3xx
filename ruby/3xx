@@ -3,6 +3,10 @@
 require 'net/http'
 require 'openssl'
 
+Signal.trap("INT") { |signo|
+	exit 255
+	}
+
 uri = URI( ARGV[0] )
 
 begin

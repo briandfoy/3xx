@@ -1,7 +1,13 @@
 #!/usr/bin/python3
 
-import sys
 import requests
+import signal
+import sys
+
+def signal_handler( sig, frame ):
+	sys.exit( 255 )
+
+signal.signal( signal.SIGINT, signal_handler )
 
 url = sys.argv[1]
 

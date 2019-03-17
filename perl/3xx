@@ -1,8 +1,11 @@
 #!/usr/bin/perl
 use v5.10.1;
 
+$SIG{'INT'} = sub { exit 255 };
+
 use Mojolicious 7;
 use Mojo::UserAgent;
+
 my $ua = Mojo::UserAgent->new;
 $ua->max_redirects(0);
 
