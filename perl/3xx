@@ -4,6 +4,7 @@ use v5.10.1;
 use Mojolicious 7;
 use Mojo::UserAgent;
 my $ua = Mojo::UserAgent->new;
+$ua->max_redirects(0);
 
 my $tx = $ua->get( $ARGV[0] );
 exit 2 if $tx->result->is_error;
