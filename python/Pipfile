@@ -1,0 +1,12 @@
+[[source]]
+url = https://github.com/briandfoy/3xx
+verify_ssl = true
+name = "3xx"
+
+[packages]
+urllib2 = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "2.7"
