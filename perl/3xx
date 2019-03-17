@@ -12,8 +12,7 @@ my $tx = $ua->get( $ARGV[0] );
 
 eval { $tx->result->is_error; 1 } or exit 2;
 
-my $location = $tx->result->headers->location;
-if( length $location ) {
+if( my $location = $tx->result->headers->location ) {
 	say $location;
 	exit 0;
 	};
