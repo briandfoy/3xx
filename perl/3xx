@@ -6,11 +6,11 @@ $SIG{'INT'} = sub { exit 255 };
 use Mojolicious 7;
 use Mojo::UserAgent;
 
-my $ua = Mojo::UserAgent->new;
-$ua->max_redirects(0);
+my $ua = Mojo::UserAgent->new->max_redirects(0);
 
 my $tx = $ua->get( $ARGV[0] );
-exit 2 if $tx->result->is_error;
+
+eval { $tx->result->is_error; 1 } or exit 2;
 
 my $location = $tx->result->headers->location;
 if( length $location ) {
