@@ -20,10 +20,11 @@ rescue Errno::ECONNREFUSED => e
 	exit 2
 end
 
-unless response.is_a?(Net::HTTPError)
-	exit 1 unless response.key? 'location'
-	puts response['location']
-	exit 0
+case response
+	when Net::HTTPRedirection then
+		puts response['location']
+	when Net::HTTPError then
+		exit 2
+	else
+		exit 1
 end
-
-exit 2
