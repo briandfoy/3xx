@@ -1,0 +1,29 @@
+#!/usr/local/bin/ruby
+
+require 'net/http'
+require 'openssl'
+
+uri = URI( ARGV[0] )
+
+begin
+	response = Net::HTTP.get_response( uri )
+rescue OpenSSL::SSL::SSLError => e
+	if e.message.downcase.index( 'unable to get local issuer certificate' )
+		unless ENV.key? 'SSL_CERT_FILE'
+			puts "No SSL_CERT_FILE file set. This should be the path to your SSL root certificate."
+		end
+	else
+		puts "SSL Error: #{e.message}"
+	end
+	exit 255
+rescue Errno::ECONNREFUSED => e
+	exit 2
+end
+
+unless response.is_a?(Net::HTTPError)
+	exit 1 unless response.key? 'location'
+	puts response['location']
+	exit 0
+end
+
+exit 2
