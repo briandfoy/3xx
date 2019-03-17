@@ -4,10 +4,7 @@ import requests
 import signal
 import sys
 
-def signal_handler( sig, frame ):
-	sys.exit( 255 )
-
-signal.signal( signal.SIGINT, signal_handler )
+signal.signal( signal.SIGINT, lambda signal, frame : exit(255) )
 
 url = sys.argv[1]
 
