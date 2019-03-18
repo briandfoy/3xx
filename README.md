@@ -1,11 +1,13 @@
 # Tools to grab the Location header
 
 I have to deal with lots of things that hide the actual URL from
-me. I have to grab some quarantined URL to get the real URL. All
+me. I have to grab some quarantined URL to get the URL it will redirect to. All
 I want is the Location header:
 
 	$ 3xx http://www.some-filter-thing.com/?deadbeef
 	https://www.perl.com/
+
+If the next URL would do also do a redirect, you have to try this again.
 
 And, I have to do this in a variety of environments where different
 tools are avialable so I've done the same thing in different tools.
