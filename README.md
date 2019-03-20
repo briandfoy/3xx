@@ -10,6 +10,36 @@ I want is the Location header:
 And, I have to do this in a variety of environments where different
 tools are avialable so I've done the same thing in different tools.
 
+## A little test program
+
+There's a Mojolicious program that has four paths. Three of those
+redirect in this chain:
+
+	* http://127.0.0.1:3000/three
+	* http://127.0.0.1:3000/two
+	* http://127.0.0.1:3000/one
+	* http://127.0.0.1:3000/none
+
+Start the app:
+
+	$ perl app.pl daemon
+	[Tue Mar 19 21:15:09 2019] [info] Listening at "http://*:3000"
+	Server available at http://127.0.0.1:3000
+
+Now try it. Each prints the redirect chain:
+
+	$ python3.7 python/3xx http://127.0.0.1:3000/three
+	http://127.0.0.1:3000/two
+	http://127.0.0.1:3000/one
+	http://127.0.0.1:3000/none
+
+	$ ruby ruby/3xx http://127.0.0.1:3000/two
+	http://127.0.0.1:3000/one
+	http://127.0.0.1:3000/none
+
+	$ perl5.28.0 perl/3xx http://127.0.0.1:3000/one
+	http://127.0.0.1:3000/none
+
 ## Exit codes
 
 * 0   - Found a Location header

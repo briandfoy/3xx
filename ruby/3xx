@@ -7,26 +7,30 @@ Signal.trap("INT") { |signal_number| exit 255 }
 
 uri = URI( ARGV[0] )
 
-begin
-	response = Net::HTTP.get_response( uri )
-rescue OpenSSL::SSL::SSLError => e
-	if e.message.downcase.index( 'unable to get local issuer certificate' )
-		unless ENV.key? 'SSL_CERT_FILE'
-			puts "No SSL_CERT_FILE file set. This should be the path to your SSL root certificate."
+while 1
+	begin
+		response = Net::HTTP.get_response( uri )
+	rescue OpenSSL::SSL::SSLError => e
+		if e.message.downcase.index( 'unable to get local issuer certificate' )
+			unless ENV.key? 'SSL_CERT_FILE'
+				STDERR.puts "No SSL_CERT_FILE file set. This should be the path to your SSL root certificate."
+			end
+		else
+			STDERR.puts "SSL Error: #{e.message}"
 		end
-	else
-		puts "SSL Error: #{e.message}"
-	end
-	exit 255
-rescue Errno::ECONNREFUSED => e
-	exit 2
-end
-
-case response
-	when Net::HTTPRedirection then
-		puts response['location']
-	when Net::HTTPError then
+		exit 255
+	rescue Errno::ECONNREFUSED => e
 		exit 2
-	else
-		exit 1
+	end
+
+	case response
+		when Net::HTTPRedirection then
+			puts response['location']
+			uri = URI( response['location'] )
+			next
+		when Net::HTTPError then
+			exit 2
+		else
+			exit 0
+	end
 end

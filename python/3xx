@@ -8,16 +8,21 @@ signal.signal( signal.SIGINT, lambda signal, frame : exit(255) )
 
 url = sys.argv[1]
 
-response = None
-try:
-	response = requests.get( url, allow_redirects=False )
-except requests.exceptions.MissingSchema:
-	print( 'Invalid url: %s' %(url) )
-	exit( 2 )
+while True:
+	response = None
+	try:
+		response = requests.get( url, allow_redirects=False )
+	except requests.exceptions.MissingSchema:
+		print( 'Invalid url: %s' %(url), file=sys.stderr, )
+		exit( 2 )
+	except requests.exceptions.ConnectionError:
+		print( 'Could not connect: %s' %(url), file=sys.stderr, )
+		exit( 2 )
 
-headers = response.headers
-if 'Location' in headers:
-	print( headers['Location'] )
-	exit( 0 )
-else:
-	exit( 1 )
+	headers = response.headers
+	if 'Location' in headers:
+		print( headers['Location'] )
+		url = headers['Location']
+		continue
+	else:
+		exit( 1 )

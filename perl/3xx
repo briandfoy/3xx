@@ -8,13 +8,17 @@ use Mojo::UserAgent;
 
 my $ua = Mojo::UserAgent->new->max_redirects(0);
 
-my $tx = $ua->get( $ARGV[0] );
+my $url = $ARGV[0];
 
-eval { $tx->result->is_error; 1 } or exit 2;
+while( 1 ) {
+	my $tx = $ua->get( $url );
 
-if( my $location = $tx->result->headers->location ) {
-	say $location;
-	exit 0;
-	};
+	eval { $tx->result->is_error; 1 } or exit 2;
 
-exit 1;
+	if( my $location = $tx->result->headers->location ) {
+		say $url = $location;
+		}
+	else {
+		exit 0
+		}
+	}
