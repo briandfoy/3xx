@@ -26,7 +26,8 @@ Start the app:
 	[Tue Mar 19 21:15:09 2019] [info] Listening at "http://*:3000"
 	Server available at http://127.0.0.1:3000
 
-Now try it. Each prints the redirect chain:
+Now try it. Each prints the redirect chain. Standard output is the
+URLs and anything else is on standard error.
 
 	$ python3.7 python/3xx http://127.0.0.1:3000/three
 	http://127.0.0.1:3000/two
