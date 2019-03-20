@@ -41,6 +41,11 @@ URLs and anything else is on standard error.
 	$ perl5.28.0 perl/3xx http://127.0.0.1:3000/one
 	http://127.0.0.1:3000/none
 
+Get the last one with `tail`:
+
+	$ python3.7 python/3xx http://127.0.0.1:3000/three | tail -1
+	http://127.0.0.1:3000/none
+
 ## Exit codes
 
 * 0   - Found a Location header
