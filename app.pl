@@ -1,9 +1,7 @@
 use v5.28;
 use Mojolicious::Lite;
 
-use feature qw(signatures);
-no warnings qw(experimental::signatures);
-
+use experimental qw(signatures);
 
 get '/none' => sub ( $c ) {
 	$c->render( text => "This is the end. My friend the end." );
